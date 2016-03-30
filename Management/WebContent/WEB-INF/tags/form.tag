@@ -17,7 +17,7 @@
 	       		 <ul>
 		            <c:forEach var="attr" items="${object.className.declaredFields}">
 		            	
-		            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role'}">
+		            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' }">
 		            	<li><b>${attr.name}</b>:&nbsp;<INPUT type="text" name="${attr.name}-t" value="${object[attr.name]}"></li>            			            	    			            	
 		            	</c:if>
 		            	

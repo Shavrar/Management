@@ -84,18 +84,21 @@ public class Storage {
     }
     
     public static Collection<Project> readAllProjects(String b) throws SQLException {
-        String sql = "select * from projects where client = '"+b+"' order by name";        
+        String sql = "select projects.* from projects join clients on clients.id = projects.client_id  where clients.name = ? order by projects.name";
+        
         Connection c = null;
-        Statement s = null;
+        PreparedStatement s = null;
         ResultSet r = null;
         try {
             c = getConnection();
             
             c.setAutoCommit(false);
             
-            s = c.createStatement();
-            //s.setString(1, name);
-            r = s.executeQuery(sql);
+            s = c.prepareStatement(sql);
+            
+            s.setString(1, b);
+            
+            r = s.executeQuery();
             Collection<Project> projects = new ArrayList<>();
             while(r.next()) {
             	Project temp = new Project();
@@ -103,7 +106,7 @@ public class Storage {
             	
                 temp.setId(r.getInt("id"));
                 
-                temp.setClient(r.getString("client"));
+                temp.setClient(b);
 				                				
                 temp.setName(r.getString("name"));
                 
@@ -236,12 +239,60 @@ public class Storage {
         }
     }
     
-    public static Project readProjectById(Integer id) throws SQLException {
-        String sql = "select * from projects where id = ?";
+    public static Client readClientByName(String name) throws SQLException {
+        String sql = "select * from clients where name = ?";
         Connection c = null;
         PreparedStatement s = null;
         ResultSet r = null;
         try {
+            c = getConnection();
+            
+            c.setAutoCommit(false);
+            
+            s = c.prepareStatement(sql);
+            s.setString(1, name);
+            r = s.executeQuery();
+            Client temp = new Client();
+            
+            if(r.next()) {
+
+                temp.setId(r.getInt("id"));
+                
+                temp.setName(r.getString("name"));
+				
+                temp.setAdress(r.getString("adress"));
+
+            }
+            c.commit();
+            return temp;
+        }
+        catch(SQLException e){
+        	c.rollback();
+        	return null;
+        }      
+        finally {
+            try {
+                r.close();
+            } catch(NullPointerException | SQLException e) {}
+            try {
+                s.close();
+            } catch(NullPointerException | SQLException e) {}
+            try {
+                c.close();
+            } catch(NullPointerException | SQLException e) {}
+        }
+    }
+    
+    public static Project readProjectById(Integer id) throws SQLException {
+        String sql = "select * from projects where id = ?";
+        
+        Connection c = null;
+        PreparedStatement s = null;
+        ResultSet r = null;
+        try {
+        	
+        	
+        	
             c = getConnection();
             c.setAutoCommit(false);
             
@@ -257,7 +308,11 @@ public class Storage {
 
             	temp.setId(r.getInt("id"));
                 
-                temp.setClient(r.getString("client"));
+            	Integer tt = r.getInt("client_id");
+            	
+            	Client cl = Storage.readClientById(tt);
+            	
+                temp.setClient(cl.getName());
 				                				
                 temp.setName(r.getString("name"));
                 
@@ -374,7 +429,7 @@ public class Storage {
     }
     
     public static void createProject(Project project) throws SQLException {
-        String sql = "INSERT INTO projects (name, client, begining, planed, rreal) VALUES "  
+        String sql = "INSERT INTO projects (name, client_id, begining, planed, rreal) VALUES "  
                    + "(?, ?, ?, ?, ?)";
         Connection c = null;
         PreparedStatement s = null;
@@ -382,10 +437,13 @@ public class Storage {
             c = getConnection();
             c.setAutoCommit(false);
             
+            Client cl = Storage.readClientByName(project.getClient());
+            
+            
             s = c.prepareStatement(sql);
             
             s.setString(1, project.getName());
-            s.setString(2, project.getClient());
+            s.setInt(2, cl.getId());
             s.setDate(3, project.getBegining());
             s.setDate(4, project.getPlaned());
             if(project.getReal()==null){
@@ -482,7 +540,7 @@ public class Storage {
     
     public static void updateProject(Project project) throws SQLException {
         String sql = "UPDATE projects SET "
-                   + "name = ?, client = ?, begining = ?, planed = ?, rreal = ? "
+                   + "name = ?, begining = ?, planed = ?, rreal = ? "
                    + "WHERE id = ?";
         Connection c = null;
         PreparedStatement s = null;
@@ -494,14 +552,14 @@ public class Storage {
            
             
             s.setString(1, project.getName());
-            s.setString(2, project.getClient());
-            s.setDate(3, project.getBegining());
-            s.setDate(4, project.getPlaned());
+            
+            s.setDate(2, project.getBegining());
+            s.setDate(3, project.getPlaned());
             if(project.getReal()==null){
-            	s.setDate(5, null);	
+            	s.setDate(4, null);	
             }
             else{
-            	s.setDate(5, project.getReal());
+            	s.setDate(4, project.getReal());
             }
             
             s.setInt(6, project.getId());
@@ -694,8 +752,8 @@ public class Storage {
     }
     
     public static Integer Counta(String name) throws SQLException {
-        String sql = "Select Count(*) as temp From projects "        
-                   + "where client = '"+name+"'";  
+        String sql = "Select Count(*) as temp From projects join clients on clients.id = projects.client_id "        
+                   + "where clients.name = '"+name+"'";  
         Connection c = null;
         Statement s = null;
         ResultSet r = null;
@@ -733,8 +791,8 @@ public class Storage {
     }
     
     public static Integer Countf(String name) throws SQLException {
-        String sql = "Select Count(*) as temp From projects "        
-                   + "WHERE client = '"+name+"' AND rreal IS NOT NULL";
+        String sql = "Select Count(*) as temp From projects join clients on clients.id = projects.client_id "        
+                   + "WHERE clients.name = '"+name+"' AND rreal IS NOT NULL";
         Connection c = null;
         Statement s = null;
         ResultSet r = null;
