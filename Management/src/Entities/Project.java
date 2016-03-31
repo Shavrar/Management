@@ -9,6 +9,7 @@ public class Project implements Entity{
 	Date begining;
 	Date planed;
 	Date real;
+	String domain_name;
 	// return true if x>=y else false
 	public static Boolean compareDate(Date x,Date y){
 		
@@ -67,9 +68,13 @@ public class Project implements Entity{
 		this.real = real;
 	}
 	
-	/*public String getT() {
-		return (planed.toString()).substring(8, 10);
-	}*/
+	public String getDomain_name() {
+		return domain_name;
+	}
+	
+	public void setDomain_name(String domain_name) {
+		this.domain_name = domain_name;
+	}
 	
 	public Boolean getFinished(){
 		if(real==null) return false;

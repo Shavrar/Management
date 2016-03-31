@@ -114,6 +114,8 @@ public class Storage {
                 
                 temp.setPlaned(Date.valueOf(r.getString("planed")));
                 
+                temp.setDomain_name(r.getString("domain_name"));
+                
                 String k=r.getString("rreal");
        
                 if(k==null){
@@ -316,6 +318,8 @@ public class Storage {
 				                				
                 temp.setName(r.getString("name"));
                 
+                temp.setDomain_name(r.getString("domain_name"));
+                
                 temp.setBegining(Date.valueOf(r.getString("begining")));
                 
                 temp.setPlaned(Date.valueOf(r.getString("planed")));
@@ -429,8 +433,8 @@ public class Storage {
     }
     
     public static void createProject(Project project) throws SQLException {
-        String sql = "INSERT INTO projects (name, client_id, begining, planed, rreal) VALUES "  
-                   + "(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO projects (name, client_id, begining, planed, rreal, domain_name) VALUES "  
+                   + "(?, ?, ?, ?, ?, ?)";
         Connection c = null;
         PreparedStatement s = null;
         try {
@@ -452,6 +456,8 @@ public class Storage {
             else{
             	s.setDate(5, project.getReal());
             }
+            
+            s.setString(6, project.getDomain_name());
             
             s.executeUpdate();
             c.commit();
@@ -540,7 +546,7 @@ public class Storage {
     
     public static void updateProject(Project project) throws SQLException {
         String sql = "UPDATE projects SET "
-                   + "name = ?, begining = ?, planed = ?, rreal = ? "
+                   + "name = ?, begining = ?, planed = ?, rreal = ?, domain_name = ? "
                    + "WHERE id = ?";
         Connection c = null;
         PreparedStatement s = null;
@@ -561,8 +567,8 @@ public class Storage {
             else{
             	s.setDate(4, project.getReal());
             }
-            
-            s.setInt(6, project.getId());
+            s.setString(6, project.getDomain_name());
+            s.setInt(7, project.getId());
             s.executeUpdate();
             c.commit();
         }

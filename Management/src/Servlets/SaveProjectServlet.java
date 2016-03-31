@@ -32,6 +32,7 @@ public class SaveProjectServlet extends HttpServlet {
         
         project.setPlaned(Date.valueOf(req.getParameter("planed-t")));
         
+        project.setDomain_name(req.getParameter("domain_name-t"));
         //checking if beginning is earlier than planned
         if(Project.compareDate(Date.valueOf(req.getParameter("begining-t")),Date.valueOf(req.getParameter("planed-t")))){
         	temp=false;
