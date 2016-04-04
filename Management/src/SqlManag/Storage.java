@@ -567,8 +567,8 @@ public class Storage {
             else{
             	s.setDate(4, project.getReal());
             }
-            s.setString(6, project.getDomain_name());
-            s.setInt(7, project.getId());
+            s.setString(5, project.getDomain_name());
+            s.setInt(6, project.getId());
             s.executeUpdate();
             c.commit();
         }

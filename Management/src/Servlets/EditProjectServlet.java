@@ -19,8 +19,8 @@ public class EditProjectServlet extends HttpServlet {
         try {
             
             
-            if(req.getParameter("idP")!=null){
-            	Integer id = Integer.parseInt(req.getParameter("idP"));	
+            if(req.getParameter("id")!=null){
+            	Integer id = Integer.parseInt(req.getParameter("id"));	
             	Project project = Storage.readProjectById(id);
             
             	req.setAttribute("ProjectT", project);
