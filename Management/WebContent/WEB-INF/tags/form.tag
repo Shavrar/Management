@@ -22,7 +22,7 @@
 		            	</c:if>
 		            	
 		            	<c:if test="${attr.name eq 'client'}"> 
-		            	<INPUT type="hidden" name="client-t" value="${object.client}">  
+		            	<INPUT type="text" name="client-t" value="${object.client}" readonly>  
 		            	</c:if>
 		            	
 		            	<c:if test="${attr.name eq 'role'}">
