@@ -8,7 +8,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <FORM action="${link}" method="post">
-       
+<c:if test="${!empty Fail}"> 
+FAILU
+</c:if>      
             
 	    
     <INPUT type="hidden" name="id-t" value="${object.id}">  

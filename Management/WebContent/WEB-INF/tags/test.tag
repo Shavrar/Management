@@ -30,9 +30,9 @@
 				<c:when test="${object.domain_name eq domain}">
 					<li> 
 						<c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-						Delete? <INPUT type="checkbox" name="idProject"
-                                   value="${object.id}">
+						Delete? <INPUT type="checkbox" name="idProject" value="${object.id}">
                         </c:if>
+                        
 						<ul>
 					            <c:forEach var="attr" items="${object.className.declaredFields}">
 					            	
@@ -60,15 +60,18 @@
 								            </c:if> 
 					            	</c:if>   					            					            	           
 					            </c:forEach>
+					            
 					            <c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
 					            	<li><b>Successfully finished</b>:&nbsp;${object.finished}</li>
 					            </c:if>
+					            
 					            <c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
 					            	<li><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
 					            </c:if>
 	       		 		</ul>	
 					</li>
 				</c:when>
+				
 				<c:when test="${fn:contains(object.domain_name,domain) and object.domain_name ne domain}">
 					<c:set var="lower_domain" value="${fn:substringAfter(fn:substringAfter(object.domain_name,domain),'.')}"/>
 					
@@ -81,19 +84,18 @@
 						<p>${lower_domain}</p>
 						<c:set var="lower_domain" value="${object.domain_name}"/>
 					</c:if>
-					
-					
+										
 					<u:test objects="${objects}" role="${role}" domain="${lower_domain}" editor="${editor}"></u:test>
-					
-					
+										
 					<c:forEach var="obj" items="${objects}">
-					<c:if test="${fn:contains(obj.domain_name,lower_domain)}">
-						<c:set target="${obj}" property="domain_name" />
-						<c:set target="${obj}" property="id" value="${null}"/>
-					</c:if>
+						<c:if test="${fn:contains(obj.domain_name,lower_domain)}">
+							<c:set target="${obj}" property="domain_name" />
+							<c:set target="${obj}" property="id" value="${null}"/>
+						</c:if>
 					</c:forEach>
 					
 				</c:when>
+				
 			</c:choose>
 		</c:forEach>
 	</c:when>
@@ -103,16 +105,17 @@
 	<c:otherwise> 
 		
 		<c:forEach var="object" items="${objects}">
+		
 					<c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
+					
 								<c:if test="${empty object.domain_name and !empty object.id}">
 									<li>
 									<ul>
 											<c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-											Delete? <INPUT type="checkbox" name="idProject"
-					                                   value="${object.id}">
-					                        </c:if>
-					                                   
-										            <c:forEach var="attr" items="${object.className.declaredFields}">
+											Delete? <INPUT type="checkbox" name="idProject" value="${object.id}">
+					                        </c:if>				                                   
+										    
+										    <c:forEach var="attr" items="${object.className.declaredFields}">
 										            	
 										            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' and attr.name ne 'domain_name'}">
 										            	<li><b>${attr.name}</b>:&nbsp;${object[attr.name]}</li>            			            	    			            	
@@ -138,13 +141,17 @@
 													            </c:if> 
 										            	</c:if>   					            					            	           
 										            </c:forEach>
-										            <c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
-										            	<li><b>Successfully finished</b>:&nbsp;${object.finished}</li>
-										            </c:if>
-										            <c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
+										    
+										    <c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
+										    <li>
+										    	<b>Successfully finished</b>:&nbsp;${object.finished}
+										    </li>
+										    </c:if>
+										    
+										    <c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
 										            	<li><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
-										            </c:if>
-						       		 		</ul>			
+										    </c:if>
+						       		 </ul>			
 									</li>				
 								</c:if>
 								
@@ -159,26 +166,31 @@
 										</c:if>
 									</c:forEach>
 								</c:if>
+								
 								<c:if test="${!empty object.domain_name and !fn:contains(object.domain_name,'.')}">			
-				<p>${object.domain_name}</p>
-				<u:test objects="${objects}" role="${role}" domain="${object.domain_name}" editor="${editor}"></u:test>
-				<c:forEach var="obj" items="${objects}">
-					<c:if test="${fn:contains(obj.domain_name,object.domain_name)}">
-						<c:set target="${obj}" property="domain_name" />
-						<c:set target="${obj}" property="id" value="${null}"/>
+									<p>${object.domain_name}</p>
+									<u:test objects="${objects}" role="${role}" domain="${object.domain_name}" editor="${editor}"></u:test>
+									<c:forEach var="obj" items="${objects}">
+										<c:if test="${fn:contains(obj.domain_name,object.domain_name) and !empty object.domain_name}">
+											
+											<c:set target="${obj}" property="domain_name" />
+											<c:set target="${obj}" property="id" value="${null}"/>
+										</c:if>
+									</c:forEach>
+								</c:if>
 					</c:if>
-				</c:forEach>
-			</c:if>
-				</c:if>
 				
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
 </ul>
-	<c:if test="${empty domain and !empty back}">
+
+
+
+<c:if test="${empty domain and !empty back}">
 		<c:if test="${role eq 'manager' and !empty creator}">
 		 	<A class="btn btn-default" role="button" href="${creator}">Add Project</A>
 		</c:if>
-	<A class="btn btn-default" role="button" href="${back}">Back</A>
-	</c:if>
+		<A class="btn btn-default" role="button" href="${back}">Back</A>
+</c:if>
    

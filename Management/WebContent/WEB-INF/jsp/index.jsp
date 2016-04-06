@@ -69,5 +69,7 @@
         <c:if test="${user.role eq 'manager'}">
         </FORM>
         </c:if>
+        
        <u:test objects="${clients}" role="${user.role}" creator="editClient.html" editor="editClient.html?id="></u:test>
+       
 </u:html>
