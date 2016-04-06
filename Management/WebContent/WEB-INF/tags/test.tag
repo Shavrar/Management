@@ -20,7 +20,7 @@
 
 
 
-<c:if test="${!empty objects}">
+
 <ul>
 
 <c:choose>
@@ -181,4 +181,4 @@
 		</c:if>
 	<A class="btn btn-default" role="button" href="${back}">Back</A>
 	</c:if>
-</c:if>    
+   
