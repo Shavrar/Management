@@ -20,9 +20,14 @@ public class SaveProjectServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         
         
+        
         Boolean temp=true;
         
         Project project = new Project();
+        
+        try {
+        	project.setId(Integer.parseInt(req.getParameter("id-t")));
+        } catch(NumberFormatException e) {}
 		
         project.setClient(req.getParameter("client-t"));
 		
@@ -33,14 +38,16 @@ public class SaveProjectServlet extends HttpServlet {
         project.setPlaned(Date.valueOf(req.getParameter("planed-t")));
         
         project.setDomain_name(req.getParameter("domain_name-t"));
+        
         //checking if beginning is earlier than planned
         if(Project.compareDate(Date.valueOf(req.getParameter("begining-t")),Date.valueOf(req.getParameter("planed-t")))){
         	temp=false;
-        	req.setAttribute("ClientName", req.getParameter("client-t"));
+        	req.setAttribute("ProjectT", project);
         	req.setAttribute("Fail", "fail");
         	getServletContext().getRequestDispatcher("/WEB-INF/jsp/editProject.jsp")
             .forward(req, resp);
         }
+        
         //small check for right input of real
         if(temp){
 		        if(req.getParameter("real-t").equalsIgnoreCase("")){
@@ -51,7 +58,8 @@ public class SaveProjectServlet extends HttpServlet {
 		        }
 		        else{
 		        	temp=false;
-		        	req.setAttribute("ClientName", project.getClient());
+		        		        
+		        	req.setAttribute("ProjectT", project);
 		        	req.setAttribute("Fail", "fail");
 		        	getServletContext().getRequestDispatcher("/WEB-INF/jsp/editProject.jsp")
 		            .forward(req, resp);
@@ -60,24 +68,21 @@ public class SaveProjectServlet extends HttpServlet {
         }
         
         if(temp){
-        try {
-        	project.setId(Integer.parseInt(req.getParameter("id-t")));
-        } catch(NumberFormatException e) {}
-
-        try {
-
-            if(project.getId() == null) {
-                Storage.createProject(project);
-            } else {
-                Storage.updateProject(project);
-            }
-
-        } catch(SQLException e) {
-            throw new ServletException(e);
-        }
-
-
-        resp.sendRedirect(req.getContextPath() + "/projects.html?ClientName="+project.getClient());
+	
+	        try {
+	
+	            if(project.getId() == null) {
+	                Storage.createProject(project);
+	            } else {
+	                Storage.updateProject(project);
+	            }
+	
+	        } catch(SQLException e) {
+	            throw new ServletException(e);
+	        }
+	
+	        
+	        resp.sendRedirect(req.getContextPath() + "/projects.html?ClientName="+project.getClient());
         }
     }
 }
