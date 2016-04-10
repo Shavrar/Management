@@ -27,6 +27,7 @@ public class SaveProjectServlet extends HttpServlet {
         
         try {
         	project.setId(Integer.parseInt(req.getParameter("id-t")));
+        	System.out.print(project.getId());
         } catch(NumberFormatException e) {}
 		
         project.setClient(req.getParameter("client-t"));
