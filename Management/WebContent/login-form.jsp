@@ -10,12 +10,16 @@
             <P style="color: red;">${param['message']}</P>
         </c:if>
         <FORM action="login.html" method="post">
+        	<div class="form-group">
             <P>User name:</P>
-            <P><INPUT type="text" name="login" required></P>
+            <INPUT type="text" class="form-control" name="login" required>
+            </div>
+            <div class="form-group">
             <P>Password:</P>
-            <P><INPUT type="password" name="password" required></P>
-            <P><BUTTON class="btn btn-default" type="submit">Enter</BUTTON></P>
+          	<INPUT type="password" class="form-control" name="password" required>
             
+            </div>
+            <BUTTON class="btn btn-default" type="submit">Enter</BUTTON>
         </FORM>
         <A class="btn btn-default" role="button" href="index.html">Back</A>
 </u:html>

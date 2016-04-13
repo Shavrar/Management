@@ -21,23 +21,22 @@
 
 
 
-<ul>
+<ul class="list-group">
 
 <c:choose>
 	<c:when test="${!empty domain}">
 		<c:forEach var="object" items="${objects}">
 			<c:choose>
 				<c:when test="${object.domain_name eq domain}">
-					<li> 
-						<c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-						Delete? <INPUT type="checkbox" name="idProject" value="${object.id}">
-                        </c:if>
-                        
-						<ul>
+						
+						<li class="list-group-item">
+						<label>Project: ${object.name}</label>
+						                        
+						<ul class="list-group">
 					            <c:forEach var="attr" items="${object.className.declaredFields}">
 					            	
 					            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' and attr.name ne 'domain_name'}">
-					            	<li><b>${attr.name}</b>:&nbsp;${object[attr.name]}</li>            			            	    			            	
+					            	<li class="list-group-item"><b>${attr.name}</b>:&nbsp;${object[attr.name]}</li>            			            	    			            	
 					            	</c:if>
 					            	
 					            	<c:if test="${attr.name eq 'client'}"> 
@@ -62,11 +61,11 @@
 					            </c:forEach>
 					            
 					            <c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
-					            	<li><b>Successfully finished</b>:&nbsp;${object.finished}</li>
+					            	<li class="list-group-item"><b>Successfully finished</b>:&nbsp;${object.finished}</li>
 					            </c:if>
 					            
 					            <c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-					            	<li><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
+					            	<li class="list-group-item"><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
 					            </c:if>
 	       		 		</ul>	
 					</li>
@@ -74,19 +73,19 @@
 				
 				<c:when test="${fn:contains(object.domain_name,domain) and object.domain_name ne domain}">
 					<c:set var="lower_domain" value="${fn:substringAfter(fn:substringAfter(object.domain_name,domain),'.')}"/>
-					
+					<li class="list-group-item">
 					<c:if test="${fn:contains(lower_domain,'.')}">
-						<p>${fn:substringBefore(lower_domain,'.')}</p>
+						<label>${fn:substringBefore(lower_domain,'.')}</label>
 						<c:set var="lower_domain" value="${fn:substringBefore(object.domain_name,fn:substringBefore(lower_domain,'.'))}"/>
 					</c:if>
 					
 					<c:if test="${!fn:contains(lower_domain,'.')}">
-						<p>${lower_domain}</p>
+						<label>${lower_domain}</label>
 						<c:set var="lower_domain" value="${object.domain_name}"/>
 					</c:if>
 										
 					<u:test objects="${objects}" role="${role}" domain="${lower_domain}" editor="${editor}"></u:test>
-										
+					</li>					
 					<c:forEach var="obj" items="${objects}">
 						<c:if test="${fn:contains(obj.domain_name,lower_domain)}">
 							<c:set target="${obj}" property="domain_name" />
@@ -109,16 +108,15 @@
 					<c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
 					
 								<c:if test="${empty object.domain_name and !empty object.id}">
-									<li>
-									<ul>
-											<c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-											Delete? <INPUT type="checkbox" name="idProject" value="${object.id}">
-					                        </c:if>				                                   
+									<li class="list-group-item">
+									<label>Project: ${object.name}</label>
+									<ul class="list-group">
+														                                   
 										    
 										    <c:forEach var="attr" items="${object.className.declaredFields}">
 										            	
 										            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' and attr.name ne 'domain_name'}">
-										            	<li><b>${attr.name}</b>:&nbsp;${object[attr.name]}</li>            			            	    			            	
+										            	<li class="list-group-item"><b>${attr.name}</b>:&nbsp;${object[attr.name]}</li>            			            	    			            	
 										            	</c:if>
 										            	
 										            	<c:if test="${attr.name eq 'client'}"> 
@@ -143,13 +141,13 @@
 										            </c:forEach>
 										    
 										    <c:if test="${fn:substringAfter(object.className,'.') eq 'Project'}">
-										    <li>
+										    <li class="list-group-item">
 										    	<b>Successfully finished</b>:&nbsp;${object.finished}
 										    </li>
 										    </c:if>
 										    
 										    <c:if test="${role eq 'manager' and fn:substringAfter(object.className,'.') eq 'Project'}">
-										            	<li><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
+										            	<li class="list-group-item"><a  class="btn btn-default" role="button" href="${editor}${object.id}">Edit</a></li>
 										    </c:if>
 						       		 </ul>			
 									</li>				
@@ -157,8 +155,10 @@
 								
 								<c:if test="${!empty object.domain_name and fn:contains(object.domain_name,'.')}">
 									<c:set var="dmn" value="${fn:substringBefore(object.domain_name,'.')}"/>
-									<p>${dmn}</p>
+									<li class="list-group-item">
+									<label>${dmn}</label>									
 									<u:test objects="${objects}" role="${role}" domain="${dmn}" editor="${editor}"></u:test>
+									</li>
 									<c:forEach var="obj" items="${objects}">
 										<c:if test="${fn:contains(obj.domain_name,dmn)}">
 											<c:set target="${obj}" property="domain_name"/>
@@ -167,9 +167,13 @@
 									</c:forEach>
 								</c:if>
 								
-								<c:if test="${!empty object.domain_name and !fn:contains(object.domain_name,'.')}">			
-									<p>${object.domain_name}</p>
+								<c:if test="${!empty object.domain_name and !fn:contains(object.domain_name,'.')}">	
+											
+									<li class="list-group-item"><label>${object.domain_name}</label>
+									
 									<u:test objects="${objects}" role="${role}" domain="${object.domain_name}" editor="${editor}"></u:test>
+									</li>
+									
 									<c:forEach var="obj" items="${objects}">
 										<c:if test="${fn:contains(obj.domain_name,object.domain_name) and !empty object.domain_name}">
 											
@@ -183,6 +187,7 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
+
 </ul>
 
 

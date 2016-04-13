@@ -1,11 +1,10 @@
 @CHARSET "UTF-8";
 
-TABLE {
-    border-collapse: collapse;
-    background: green;
-    color:yellow;
+
+.hov[id]:hover {
+    cursor: pointer;
+    background: grey;
 }
-TH, TD {
-    border: 1px solid black;
-    padding: 5px 30px 5px 10px;
+.form-control {
+	width:30px;
 }

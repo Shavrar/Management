@@ -17,11 +17,10 @@
         </div>
         <div class="form-group">
         <c:if test="${user.role eq 'manager'}">
-        <FORM action="deleteClient.html" method="post">
+        
         </c:if>
             <TABLE class="table table-bordered">
-                <TR>
-                    <c:if test="${user.role eq 'manager'}"><TH>&nbsp;</TH></c:if>
+                <TR>                
                     <TH>Name</TH>
                     <TH>Adress</TH>
                     <TH>All Projects</TH>
@@ -29,22 +28,11 @@
                     <TH>&nbsp;</TH>
                 </TR>
                 <c:forEach var="client" items="${clients}">
-                    <TR>
-                        <c:if test="${user.role eq 'manager'}">
-                        <TD>
-                            <INPUT type="checkbox" name="id"
-                                   value="${client.id}">
-                        </TD>
+                    <c:if test="${user.role ne 'manager'}"><TR></c:if>
+                	<c:if test="${user.role eq 'manager'}"><TR class="hov" id="editClient.html?id=${client.id}"></c:if>
+                        <c:if test="${user.role eq 'manager'}">                        
                         </c:if>
-                        <TD>
-                            <c:if test="${user.role eq 'manager'}">
-                            <A class="btn btn-default" role="button" href="editClient.html?id=${client.id}">
-                            </c:if>
-                                ${client.name}
-                            <c:if test="${user.role eq 'manager'}">
-                            </A>
-                            </c:if>
-                        </TD>
+                        <TD>${client.name}</TD>
                         <TD>${client.adress}</TD>
                         <TD>${client.counta} </TD>
                         <TD>${client.countf} </TD>
@@ -56,7 +44,7 @@
         <c:if test="${user.role eq 'manager'}">
             <P>
                 <A class="btn btn-default" role="button" href="editClient.html">Add Client</A>
-                <BUTTON class="btn btn-default" type="submit">Delete Client</BUTTON>
+                
             </P>
         </c:if>
         </div>
@@ -67,7 +55,7 @@
         </c:if>
         
         <c:if test="${user.role eq 'manager'}">
-        </FORM>
+        
         </c:if>
         
        <u:test objects="${clients}" role="${user.role}" creator="editClient.html" editor="editClient.html?id="></u:test>

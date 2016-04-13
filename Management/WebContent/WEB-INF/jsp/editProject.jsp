@@ -6,6 +6,6 @@
 
 <u:html title="Тест JSP" stylesheet="CSS/boot/bootstrap.min.css">
   		
-		<u:form object="${ProjectT}" link="saveProject.html" back="projects.html?ClientName=${ProjectT.client}"></u:form>
+		<u:form object="${ProjectT}" link="saveProject.html" back="projects.html?ClientName=${ProjectT.client}" delete="deleteProject.html"></u:form>
 		
 </u:html>
