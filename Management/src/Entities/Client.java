@@ -1,8 +1,7 @@
 package Entities;
 
-import java.sql.SQLException;
 
-import SqlManag.Storage;
+
 
 public class Client implements Entity {
     /**
@@ -12,8 +11,9 @@ public class Client implements Entity {
 	private Integer id;
     private String adress;
     private String name;
+    private Integer all;
+    private Integer finished;
     
-
     public Integer getId() {
         return id;
         
@@ -39,16 +39,7 @@ public class Client implements Entity {
         this.adress=adress;
     }
     
-    public Integer getCounta() throws SQLException{
-    	
-    	return Storage.Counta(name);
-    	
-    }
     
-    public Integer getCountf() throws SQLException{
-    	
-    	return Storage.Countf(name);
-    }
 
 	@Override
 	public Class getClassName() {
@@ -58,6 +49,22 @@ public class Client implements Entity {
 	@Override
 	public String getStringName() {
 		return "Client";
+	}
+
+	public Integer getFinished() {
+		return finished;
+	}
+
+	public void setFinished(Integer finished) {
+		this.finished = finished;
+	}
+
+	public Integer getAll() {
+		return all;
+	}
+
+	public void setAll(Integer all) {
+		this.all = all;
 	}
 
 }

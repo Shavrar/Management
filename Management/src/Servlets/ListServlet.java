@@ -42,7 +42,10 @@ public class ListServlet extends HttpServlet {
         try {
 
             Collection<Client> clients = Storage.readAllClients();
+            
             req.setAttribute("clients", clients);
+            
+            
             getServletContext().
                             getRequestDispatcher("/WEB-INF/jsp/index.jsp")
                                                       .forward(req, resp);

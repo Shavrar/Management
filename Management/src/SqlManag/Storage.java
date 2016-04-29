@@ -148,8 +148,7 @@ public class Storage {
             } catch(NullPointerException | SQLException e) {}
         }
     }
-    
-    
+     
     public static Collection<User> readAllUsers() throws SQLException {
         String sql = "select * from users order by login";        
         Connection c = null;

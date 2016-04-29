@@ -39,6 +39,7 @@ public class ProjectsServlet extends HttpServlet {
                                     throws ServletException, IOException {
 
         try {
+        	
         	String name=req.getParameter("ClientName");
             Collection<Project> projects = Storage.readAllProjects(name);
             req.setAttribute("projects", projects);

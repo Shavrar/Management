@@ -22,7 +22,7 @@
 	       		 
 		            <c:forEach var="attr" items="${object.className.declaredFields}">
 		            	
-		            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' }">
+		            	<c:if test="${attr.name ne 'id' and attr.name ne 'client' and attr.name ne 'role' and attr.name ne 'all' and attr.name ne 'finished'}">
 			            	<div class="form-group">
 			            	<label>${attr.name}</label>
 			            	

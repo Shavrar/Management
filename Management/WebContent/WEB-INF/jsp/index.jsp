@@ -4,7 +4,8 @@
 <%@taglib tagdir="/WEB-INF/tags" prefix="u"%>
 
 <u:html title="Тест JSP" stylesheet="CSS/boot/bootstrap.min.css">
-
+		
+		
     	<div class="form-group">
         <c:choose>
             <c:when test="${not empty user}">
@@ -34,8 +35,8 @@
                         </c:if>
                         <TD>${client.name}</TD>
                         <TD>${client.adress}</TD>
-                        <TD>${client.counta} </TD>
-                        <TD>${client.countf} </TD>
+                        <TD>${client.all} </TD>
+                        <TD>${client.finished} </TD>
                         <TD><A class="btn btn-default" role="button" href="projects.html?ClientName=${client.name}">View Projects</A></TD>       
                     </TR>
                 </c:forEach>
